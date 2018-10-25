@@ -6,7 +6,7 @@ body {
 }
 
 select, option, #input {
-    text-align: left;
+    text-align: center;
     height: 30px;
     width: 80%;
     margin-top: 20px;
@@ -14,7 +14,16 @@ select, option, #input {
     font-size: 18px;
 }
 
+/* #table-box {
+    text-align: left
+} */
+
+table {
+    width: 100%;
+}
+
 #title-box > h3 {
+    /* text-align: center; */
     color: white;
     line-height: 10px;
 }
