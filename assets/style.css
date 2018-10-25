@@ -1,0 +1,117 @@
+body {
+    text-align: center;
+    background-color: black;
+    /* background-image: url(https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/uvwwIgO/rain-drop-with-street-colorful-traffic-lights-at-night-blur-bokeh-abstract-background-vintage-color-tone-cool-chill-wet-raining-season-concept_4wrtrqkqe__F0000.png); */
+    background-size: cover;
+}
+
+select, option, #input {
+    text-align: left;
+    height: 30px;
+    width: 80%;
+    margin-top: 20px;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+#title-box > h3 {
+    color: white;
+    line-height: 10px;
+}
+
+#submit-button {
+    margin-top: 20px;
+    width: 100px;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 20px;
+    color: white;
+    border: none;
+    background-color: rgb(37, 45, 151);
+}
+
+.container {
+    background-color: beige;
+    opacity: .75;
+    width: 60%;
+    margin: auto;
+    margin-top: 30px;
+    border-radius: 10px;
+    /* padding: 10px; */
+}
+
+#search-box {
+    background-color: cadetblue;
+    padding: 10px;
+    border-radius: 10px 10px 0px 0px;
+}
+
+#bottom {
+    background-color: cadetblue;
+    height: 20px;
+    border-radius: 0px 0px 10px 10px;
+
+}
+
+h1, h2, h3, p {
+    font-family: 'Merriweather Sans', sans-serif;
+}
+
+h1 {
+    font-size: 40px;
+    color: rgb(22, 89, 167);
+    font-style: bold;
+}
+
+p {
+    font-size: 14px;
+    line-height: 0px;
+    margin-top: 40px;
+    font-style: bold;
+}
+
+#year > p {
+    font-size: 24px;
+    /* padding-top: 20px; */
+}
+
+#mapid { 
+    height: 500px;
+    width: 100%; 
+}
+
+#myChart {
+    height: 400px;
+    width: 100%;
+}
+
+/* #unemployment {
+    padding-bottom: 10px;
+} */
+
+@media screen and (max-width: 768px) {
+    .container {
+        width: 99%;
+        margin-top: 5px;
+    }
+
+    h1 {
+        padding: 0px 5px 0px 5px;
+        font-size: 32px;
+    }
+}
+
+/* button {
+    font-family: 'Merriweather Sans', sans-serif;
+    font-size: 14px;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: rgb(86, 142, 206);
+    color: beige;
+    border-width: 1px;
+    opacity: .75;
+} */
+
+/* .hidden {
+    visibility: hidden;
+} */
