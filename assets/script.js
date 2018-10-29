@@ -1,3 +1,4 @@
+
 window.onload = function () {
 
     var countyGA = [
@@ -1962,6 +1963,94 @@ window.onload = function () {
         "Moved in 1990 to 1999",
         "Moved in 1980 to 1989",
         "Moved in 1979 or earlier",
+        "Occupied housing units",
+        "No vehicle available",
+        "1 vehicle available",
+        "2 vehicles available",
+        "3 or more vehicles available",
+        "Occupied housing units",
+        "Utility gas",
+        "Bottled, tank, or LP gas",
+        "Electricity",
+        "Fuel oil, kerosene, etc.",
+        "Coal or coke",
+        "Wood",
+        "Solar energy",
+        "Other fuel	",
+        "No fuel used",
+        "Occupied housing units",
+        "Lacking complete plumbing facilities",
+        "Lacking complete kitchen facilities",
+        "No telephone service available",
+        "Occupied housing units",
+        "1.00 or less",
+        "1.01 to 1.50",
+        "1.51 or more",
+        "Owner-occupied housing units",
+        "Less than $50,000",
+        "$50,000 to $99,999",
+        "$100,000 to $149,999",
+        "$150,000 to $199,999",
+        "$200,000 to $299,999",
+        "$300,000 to $499,999",
+        "$500,000 to $999,999",
+        "$1,000,000 or more",
+        "Median (dollars)",
+        "Owner-occupied housing units",
+        "Housing units with a mortgage",
+        "Housing units without a mortgage",
+        "Housing units WITH a mortgage",
+        "Less than $500",
+        "$500 to $999",
+        "$1,000 to $1,499",
+        "$1,500 to $1,999",
+        "$2,000 to $2,499",    
+        "$2,500 to $2,999",
+        "$3,000 or more",
+        "Median (dollars)",
+        "Housing units WITHOUT a mortgage",
+        "Less than $250",
+        "$250 to $399",
+        "$400 to $599",
+        "$600 to $799",
+        "$800 to $999",
+        "$1,000 or more",
+        "Median (dollars)",
+        "Housing units WITH a mortgage (computed)",
+        "Less than 20.0 percent",
+        "20.0 to 24.9 percent",
+        "25.0 to 29.9 percent",
+        "30.0 to 34.9 percent",
+        "35.0 percent or more",
+        "Not computed",
+        "Housing units WITHOUT a mortgage (computed)",
+        "Less than 10.0 percent",
+        "10.0 to 14.9 percent",
+        "15.0 to 19.9 percent",
+        "20.0 to 24.9 percent",
+        "25.0 to 29.9 percent",
+        "30.0 to 34.9 percent",
+        "35.0 percent or more",
+        "Not computed",
+        "Occupied units paying rent",
+        "Less than $500",
+        "$500 to $999",        
+        "$1,000 to $1,499",
+        "$1,500 to $1,999",
+        "$2,000 to $2,499",
+        "$2,500 to $2,999",
+        "$3,000 or more",
+        "Median (dollars)",
+        "No rent paid",
+        "Ocuppied units paying rent (computed)",
+        "Less than 10.0 percent",
+        "10.0 to 14.9 percent",
+        "15.0 to 19.9 percent",
+        "20.0 to 24.9 percent",
+        "25.0 to 29.9 percent",
+        "30.0 to 34.9 percent",
+        "35.0 percent or more",
+        "Not computed"
     ]
 
     $(`#input`).autocomplete({
@@ -1969,9 +2058,11 @@ window.onload = function () {
     });
 
 
-    $(`#submit-button`).on(`click`, function () {
+    $(`#submit-button`).on(`click` , function () {
 
         console.log(`button clicked`);
+
+        $(`#table-box`).attr(`class`, `visible`);
 
         var input = $(`#input`).val();
 
@@ -1981,7 +2072,10 @@ window.onload = function () {
             
             console.log(response)
 
-            $(`#table-box`).empty();
+            $(`#table-box`).empty()
+                .append(`
+                <h1 id="cityTitle">${input}</h1>
+                `);
 
             function tableWrite (init,end,tableName,tableID,response){
 
@@ -1996,7 +2090,9 @@ window.onload = function () {
                     <th>Percent</th>
                     <th>%MOE</th>
                 </tr>
-                </table>`);
+                </table>
+                <button id="table${tableID}toCSV" class="csv-button">download .csv</button>
+                `);
 
                 for (i = init; i < end; i++) {
                     // var labelID = response[0][i];
@@ -2004,8 +2100,16 @@ window.onload = function () {
                     var estimateMOE = `+/-${response[1][i + 1]}`;
                     var percent = response[1][i + 2];
                     var percentMOE = response[1][i + 3];
+
+                    if (estimate > 999) {
+                        estimate = numeral(estimate).format('0,0')
+                    };
+
+                    if (response[1][i+1] > 999) {
+                        estimateMOE = `+/-${numeral(response[1][i+1]).format('0,0')}`
+                    };
     
-                    if (percent == -888888888 || estimate === percent) {
+                    if (percent == -888888888 || estimate === numeral(percent).format(`0,0`) || estimate === percent) {
                         percent = `*****`;
                     } else {
                         percent = `${percent}%`;
@@ -2024,6 +2128,7 @@ window.onload = function () {
                         if ((i-init) % 8 == 0){
                             tableRow.attr("class","band");
                         }
+
                         tableRow.html(`
                             <td class="rowLabel">${rowLabels[labelIndex]}</td>
                             <td>${estimate}</td>
@@ -2032,9 +2137,13 @@ window.onload = function () {
                             <td>${percentMOE}</td>
         
                             `);
-                        $(`#table${tableID}`).append(tableRow);
+                        $(`#table${tableID}`).append(tableRow);       
                     }
-                }
+                };
+
+                $(`#table${tableID}toCSV`).on(`click`, function(){
+                    console.log(`You clicked to download CSV for "${input}: ${tableName}" table.`);
+                })
             };
 
             tableWrite (0,20,"Housing Occupancy", 1,response);
@@ -2050,51 +2159,10 @@ window.onload = function () {
             tableWrite (300,316,"Occupants Per Room",11,response);
             tableWrite (316,356,"Value",12,response);
             tableWrite (356,368,"Mortgage Status",13,response);
-            tableWrite (368,432,"Selected Monthly Owner Costs (SMOC)",14,response);
-            tableWrite (432,500,"Selected Monthly Owner Costs as a Percentage of Household Income (SMOCAPI)",15,response);
+            tableWrite (368,436,"Selected Monthly Owner Costs (SMOC)",14,response);
+            tableWrite (436,500,"Selected Monthly Owner Costs as a Percentage of Household Income (SMOCAPI)",15,response);
             tableWrite (500,540,"Gross Rent",16,response);
-            tableWrite (540,570,"Gross Rent as a Percentaga of Household Income (GRAPI)",17,response);
-
-
-
-            
-
-            // for (i = 20; i < 570; i++) {
-            //     var labelID = response[0][i];
-            //     var estimate = response[1][i];
-            //     var estimateMOE = response[1][i + 1];
-            //     var percent = response[1][i + 2];
-            //     var percentMOE = response[1][i + 3];
-
-            //     if (percent == -888888888 || estimate === percent) {
-            //         percent = `*****`;
-            //     } else {
-            //         percent = `${percent}%`;
-            //     };
-
-
-            //     if (percentMOE == -888888888) {
-            //         percentMOE = `*****`;
-            //     } else {
-            //         percentMOE = `+/-${percentMOE}`;
-            //     }
-
-            //     if (i % 4 == 0) {
-            //         var labelIndex = i / 4;
-            //         var tableRow = $(`<tr>`);
-            //         tableRow.html(`
-            //         <td>${i}</td>
-            //         <td>${labelID}</td>
-            //         <td>${rowLabels[labelIndex]}</td>
-            //         <td>${estimate}</td>
-            //         <td>${estimateMOE}</td>
-            //         <td>${percent}</td>
-            //         <td>${percentMOE}</td>
-
-            //         `);
-            //         $(`#table2`).append(tableRow);
-            //     }
-            // }
+            tableWrite (540,574,"Gross Rent as a Percentaga of Household Income (GRAPI)",17,response);
         };
 
         var apiKey = `106872a18b40c2368c03c0b84de5322f9e09b710`

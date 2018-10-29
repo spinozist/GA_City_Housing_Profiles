@@ -20,19 +20,35 @@ select, option, #input {
 
 table {
     width: 80%;
-    margin: auto;
+    margin: auto auto 0px auto;
     background-color: whitesmoke;
-    /* border: solid 1px;
-    border-color: darkgray; */
+    border: solid 3px;
+    border-color: cadetblue;
+}
+
+.visible {
+    padding-bottom: 40px;
+}
+
+.csv-button {
+    float: right;
+    margin-right: 10%;
+    background-color: cadetblue;
+    color: whitesmoke;
+    border-radius: 0px 0px 5px 5px;
+    padding: 5px;
+    margin-top: 0px;
+    border-color: cadetblue;
 }
 
 .band {
     background-color: lightgray;
 }
 
-.rowLabel {
-    /* font-size: 1.15em; */
-    /* text-align: right; */
+#cityTitle {
+    color: cadetblue;
+    font-size: 3em;
+    margin: 40px auto 0px auto;
 }
 
 #title-box > h3 {
@@ -55,7 +71,7 @@ table {
 .container {
     background-color: whitesmoke;
     opacity: .75;
-    width: 60%;
+    width: 80%;
     margin: auto;
     margin-top: 30px;
     border-radius: 10px;
@@ -72,6 +88,7 @@ table {
     background-color: cadetblue;
     height: 20px;
     border-radius: 0px 0px 10px 10px;
+    /* margin-top: 40px; */
 
 }
 
@@ -85,31 +102,15 @@ h1 {
     font-style: bold;
 }
 
-p {
-    font-size: 14px;
-    line-height: 0px;
-    margin-top: 40px;
-    font-style: bold;
-}
-
-#year > p {
+h2 {
+    color: whitesmoke;
     font-size: 24px;
-    /* padding-top: 20px; */
+    margin: 30px auto 0px auto;
+    background-color: cadetblue;
+    width: 70%;
+    border-radius: 5px 5px 0px 0px;
+    padding: 5px;
 }
-
-#mapid { 
-    height: 500px;
-    width: 100%; 
-}
-
-#myChart {
-    height: 400px;
-    width: 100%;
-}
-
-/* #unemployment {
-    padding-bottom: 10px;
-} */
 
 @media screen and (max-width: 768px) {
     .container {
@@ -122,18 +123,3 @@ p {
         font-size: 32px;
     }
 }
-
-/* button {
-    font-family: 'Merriweather Sans', sans-serif;
-    font-size: 14px;
-    border-radius: 5px;
-    padding: 10px;
-    background-color: rgb(86, 142, 206);
-    color: beige;
-    border-width: 1px;
-    opacity: .75;
-} */
-
-/* .hidden {
-    visibility: hidden;
-} */
