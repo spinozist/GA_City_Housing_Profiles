@@ -1921,6 +1921,47 @@ window.onload = function () {
         "20 or more units",
         "Mobile home",
         "Boat, RV, van, etc.",
+        "Total housing units",
+        "Built 2014 or later",
+        "Built 2010 to 2013",
+        "Built 2000 to 2009",
+        "Built 1990 to 1999",
+        "Built 1980 to 1989",
+        "Built 1970 to 1979",
+        "Built 1960 to 1969",
+        "Built 1950 to 1959",
+        "Built 1940 to 1949",
+        "Built 1939 or earlier",
+        "Total housing units",
+        "1 room",
+        "2 rooms",
+        "3 rooms",
+        "4 rooms",
+        "5 rooms",
+        "6 rooms",
+        "7 rooms",
+        "8 rooms",
+        "9 rooms",
+        "Median rooms",
+        "Total housing units",
+        "No bedroom",
+        "1 bedroom",
+        "2 bedrooms",
+        "3 bedrooms",
+        "4 bedrooms",
+        "5 or more bedrooms",
+        "Occupied housing units",
+        "Owner-occupied",
+        "Renter-Occupied",
+        "Average houshold size of owner-occupied unit",
+        "Average houshold size of renter-occupied unit",
+        "Occupied housing units",
+        "Moved in 2015 or later",
+        "Moved in 2010 to 2014",
+        "Moved in 2000 to 2009",
+        "Moved in 1990 to 1999",
+        "Moved in 1980 to 1989",
+        "Moved in 1979 or earlier",
     ]
 
     $(`#input`).autocomplete({
@@ -1937,53 +1978,28 @@ window.onload = function () {
         var cityID = cityIDs[cityGA.indexOf(input)]
 
         function writeProfile(response) {
+            
             console.log(response)
 
-            $(`#table-box`).empty()
-                .html(`  
-                <br>
-                <h2>Housing Occupancy</h2>
-                <table id="table1">
-                <tr>
-                    <th>Index</th>
-                    <th>Label ID</th>
-                    <th>Label</th>
-                    <th>Estimate</th>
-                    <th>MOE</th>
-                    <th>Percent</th>
-                    <th>%MOE</th>
-                </tr>
-                </table>
-                <h2>Units in Structure</h2>
-                <table id="table2">
-                <tr>
-                    <th>Index</th>
-                    <th>Label ID</th>
-                    <th>Label</th>
-                    <th>Estimate</th>
-                    <th>MOE</th>
-                    <th>Percent</th>
-                    <th>%MOE</th>
-                </tr>
-                </table>
-                <h2>Year Built Structure</h2>
-                <table id="table3">
-                <tr>
-                    <th>Index</th>
-                    <th>Label ID</th>
-                    <th>Label</th>
-                    <th>Estimate</th>
-                    <th>MOE</th>
-                    <th>Percent</th>
-                    <th>%MOE</th>
-                </tr>
-                </table>`
-                );
+            $(`#table-box`).empty();
 
-            function tableWrite (init,end,tableID,response){
+            function tableWrite (init,end,tableName,tableID,response){
+
+                $(`#table-box`).append(`  
+                <br>
+                <h2>${tableName}</h2>
+                <table id="table${tableID}">
+                <tr>
+                    <th></th>
+                    <th>Estimate</th>
+                    <th>MOE</th>
+                    <th>Percent</th>
+                    <th>%MOE</th>
+                </tr>
+                </table>`);
 
                 for (i = init; i < end; i++) {
-                    var labelID = response[0][i];
+                    // var labelID = response[0][i];
                     var estimate = response[1][i];
                     var estimateMOE = `+/-${response[1][i + 1]}`;
                     var percent = response[1][i + 2];
@@ -2005,10 +2021,11 @@ window.onload = function () {
                     if (i % 4 == 0) {
                         var labelIndex = i / 4;
                         var tableRow = $(`<tr>`);
+                        if ((i-init) % 8 == 0){
+                            tableRow.attr("class","band");
+                        }
                         tableRow.html(`
-                            <td>${i}</td>
-                            <td>${labelID}</td>
-                            <td>${rowLabels[labelIndex]}</td>
+                            <td class="rowLabel">${rowLabels[labelIndex]}</td>
                             <td>${estimate}</td>
                             <td>${estimateMOE}</td>
                             <td>${percent}</td>
@@ -2020,9 +2037,25 @@ window.onload = function () {
                 }
             };
 
-            tableWrite (0,20,1,response);
-            tableWrite (20,60,2,response);
-            tableWrite (60,570,3,response);
+            tableWrite (0,20,"Housing Occupancy", 1,response);
+            tableWrite (20,60,"Units in Structure",2,response);
+            tableWrite (60,104,"Year Structure Built",3,response);
+            tableWrite (104,148,"Rooms",4,response);
+            tableWrite (148,176,"Bedrooms",5,response);
+            tableWrite (176,196,"Housing Tenure",6,response);
+            tableWrite (196,224,"Year Householder Moved Into Unit",7,response);
+            tableWrite (224,244,"Vehicles Available",8,response);
+            tableWrite (244,284,"House Heating Fuel",9,response);
+            tableWrite (284,300,"Selected Characteristics",10,response);
+            tableWrite (300,316,"Occupants Per Room",11,response);
+            tableWrite (316,356,"Value",12,response);
+            tableWrite (356,368,"Mortgage Status",13,response);
+            tableWrite (368,432,"Selected Monthly Owner Costs (SMOC)",14,response);
+            tableWrite (432,500,"Selected Monthly Owner Costs as a Percentage of Household Income (SMOCAPI)",15,response);
+            tableWrite (500,540,"Gross Rent",16,response);
+            tableWrite (540,570,"Gross Rent as a Percentaga of Household Income (GRAPI)",17,response);
+
+
 
             
 

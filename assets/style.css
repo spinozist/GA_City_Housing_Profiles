@@ -19,12 +19,25 @@ select, option, #input {
 } */
 
 table {
-    width: 100%;
+    width: 80%;
+    margin: auto;
+    background-color: whitesmoke;
+    /* border: solid 1px;
+    border-color: darkgray; */
+}
+
+.band {
+    background-color: lightgray;
+}
+
+.rowLabel {
+    /* font-size: 1.15em; */
+    /* text-align: right; */
 }
 
 #title-box > h3 {
     /* text-align: center; */
-    color: white;
+    color: whitesmoke;
     line-height: 10px;
 }
 
@@ -34,13 +47,13 @@ table {
     padding: 5px;
     border-radius: 5px;
     font-size: 20px;
-    color: white;
+    color: whitesmoke;
     border: none;
     background-color: rgb(37, 45, 151);
 }
 
 .container {
-    background-color: beige;
+    background-color: whitesmoke;
     opacity: .75;
     width: 60%;
     margin: auto;
@@ -68,7 +81,7 @@ h1, h2, h3, p {
 
 h1 {
     font-size: 40px;
-    color: rgb(22, 89, 167);
+    color: whitesmoke;
     font-style: bold;
 }
 
