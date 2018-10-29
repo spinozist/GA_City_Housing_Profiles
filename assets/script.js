@@ -788,7 +788,7 @@ window.onload = function () {
         "Young Harris",
         "Zebulon"
     ]
-        
+
     var cityIDs = [
         "00184",
         "00408",
@@ -1416,7 +1416,7 @@ window.onload = function () {
         "84960",
         "85128"
     ]
-    
+
     var countyFIPS = [
         "001",
         "003",
@@ -1905,9 +1905,28 @@ window.onload = function () {
 
     ]
 
+    var rowLabels = [
+        "Total housing units",
+        "Occupied housing units",
+        "Vacant housing units",
+        "Homeowner vacancy rate",
+        "Rental vacancy rate",
+        "Total housing units",
+        "1-unit, detached",
+        "1-unit, attached",
+        "2 units",
+        "3 to 4 units",
+        "5 to 9 units",
+        "10 to 19 units",
+        "20 or more units",
+        "Mobile home",
+        "Boat, RV, van, etc.",
+    ]
+
     $(`#input`).autocomplete({
         source: cityGA
-      });
+    });
+
 
     $(`#submit-button`).on(`click`, function () {
 
@@ -1917,33 +1936,134 @@ window.onload = function () {
 
         var cityID = cityIDs[cityGA.indexOf(input)]
 
-        function writeProfile(response){
+        function writeProfile(response) {
             console.log(response)
+
             $(`#table-box`).empty()
                 .html(`  
                 <br>
-                <table id="table">
+                <h2>Housing Occupancy</h2>
+                <table id="table1">
                 <tr>
                     <th>Index</th>
-                    <th>Lable ID</th>
+                    <th>Label ID</th>
+                    <th>Label</th>
                     <th>Estimate</th>
-                    <th>Percent Estimate</th>
+                    <th>MOE</th>
+                    <th>Percent</th>
+                    <th>%MOE</th>
                 </tr>
-                </table>`);
-            for (i =0; i < 570; i++) {
-                if(i % 4 == 0){
-                    var tableRow = $(`<tr>`);
-                    tableRow.html(`
-                    <td>${i}</td>
-                    <td>${response[0][i]}</td>
-                    <td>${response[1][i]}</td>
-                    <td>${response[1][i+2]}</td>
-                    `);
-                    $(`#table`).append(tableRow);
-                }
-            }
-        }
+                </table>
+                <h2>Units in Structure</h2>
+                <table id="table2">
+                <tr>
+                    <th>Index</th>
+                    <th>Label ID</th>
+                    <th>Label</th>
+                    <th>Estimate</th>
+                    <th>MOE</th>
+                    <th>Percent</th>
+                    <th>%MOE</th>
+                </tr>
+                </table>
+                <h2>Year Built Structure</h2>
+                <table id="table3">
+                <tr>
+                    <th>Index</th>
+                    <th>Label ID</th>
+                    <th>Label</th>
+                    <th>Estimate</th>
+                    <th>MOE</th>
+                    <th>Percent</th>
+                    <th>%MOE</th>
+                </tr>
+                </table>`
+                );
+
+            function tableWrite (init,end,tableID,response){
+
+                for (i = init; i < end; i++) {
+                    var labelID = response[0][i];
+                    var estimate = response[1][i];
+                    var estimateMOE = `+/-${response[1][i + 1]}`;
+                    var percent = response[1][i + 2];
+                    var percentMOE = response[1][i + 3];
+    
+                    if (percent == -888888888 || estimate === percent) {
+                        percent = `*****`;
+                    } else {
+                        percent = `${percent}%`;
+                    };
+    
+    
+                    if (percentMOE == -888888888) {
+                        percentMOE = `*****`;
+                    } else {
+                        percentMOE = `+/-${percentMOE}`;
+                    }
+    
+                    if (i % 4 == 0) {
+                        var labelIndex = i / 4;
+                        var tableRow = $(`<tr>`);
+                        tableRow.html(`
+                            <td>${i}</td>
+                            <td>${labelID}</td>
+                            <td>${rowLabels[labelIndex]}</td>
+                            <td>${estimate}</td>
+                            <td>${estimateMOE}</td>
+                            <td>${percent}</td>
+                            <td>${percentMOE}</td>
         
+                            `);
+                        $(`#table${tableID}`).append(tableRow);
+                    }
+                }
+            };
+
+            tableWrite (0,20,1,response);
+            tableWrite (20,60,2,response);
+            tableWrite (60,570,3,response);
+
+            
+
+            // for (i = 20; i < 570; i++) {
+            //     var labelID = response[0][i];
+            //     var estimate = response[1][i];
+            //     var estimateMOE = response[1][i + 1];
+            //     var percent = response[1][i + 2];
+            //     var percentMOE = response[1][i + 3];
+
+            //     if (percent == -888888888 || estimate === percent) {
+            //         percent = `*****`;
+            //     } else {
+            //         percent = `${percent}%`;
+            //     };
+
+
+            //     if (percentMOE == -888888888) {
+            //         percentMOE = `*****`;
+            //     } else {
+            //         percentMOE = `+/-${percentMOE}`;
+            //     }
+
+            //     if (i % 4 == 0) {
+            //         var labelIndex = i / 4;
+            //         var tableRow = $(`<tr>`);
+            //         tableRow.html(`
+            //         <td>${i}</td>
+            //         <td>${labelID}</td>
+            //         <td>${rowLabels[labelIndex]}</td>
+            //         <td>${estimate}</td>
+            //         <td>${estimateMOE}</td>
+            //         <td>${percent}</td>
+            //         <td>${percentMOE}</td>
+
+            //         `);
+            //         $(`#table2`).append(tableRow);
+            //     }
+            // }
+        };
+
         var apiKey = `106872a18b40c2368c03c0b84de5322f9e09b710`
 
         var queryURL = `https://api.census.gov/data/2016/acs/acs5/profile?key=${apiKey}&get=group(DP04)&for=place:${cityID}&in=state:13`;
