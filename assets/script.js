@@ -1526,7 +1526,7 @@ window.onload = function () {
                         shortCityName = shortCityName.substring(0,14);
                     }
                     
-                    var filename = `${shortTableName}-${shortCityName}`
+                    var filename = `${shortTableName}-${shortCityName}.csv`
 
                     if (tableName === "Year Householder Moved Into Unit"){
                         filename = `YearMovedIn-${shortCityName}`
