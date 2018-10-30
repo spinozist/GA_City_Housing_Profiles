@@ -1496,11 +1496,14 @@ window.onload = function () {
                     console.log(`You clicked to download CSV for "${input}: ${tableName}" table.`);
 
                     function exportTableToCSV(filename) {
+                        var header = `${tableName} data for ${input}`
                         var csv = [];
                         var rows = document.querySelectorAll(`#table${tableID} tr`);
                         var footer1 = `Accessed via Atlanta Regional Commission (ARC)'s Georgia City Housing Profile Tool`;
                         var footer2 = `Data source: US Census / American Community Survey / 5-year estimates / 2012-16`;
 
+                        csv.push(header);
+                        csv.push(``);
                         
                         for (var i = 0; i < rows.length; i++) {
                             var row = [], cols = rows[i].querySelectorAll("td, th");
