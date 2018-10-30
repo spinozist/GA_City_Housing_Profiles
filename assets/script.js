@@ -1529,19 +1529,19 @@ window.onload = function () {
                     var filename = `${shortTableName}-${shortCityName}.csv`
 
                     if (tableName === "Year Householder Moved Into Unit"){
-                        filename = `YearMovedIn-${shortCityName}`
+                        filename = `YearMovedIn-${shortCityName}.csv`
                     };
 
                     if (tableName === "Selected Monthly Owner Costs (SMOC)"){
-                        filename = `SMOC-${shortCityName}`
+                        filename = `SMOC-${shortCityName}.csv`
                     };
 
                     if (tableName === "Selected Monthly Owner Costs as a Percentage of Household Income (SMOCAPI)"){
-                        filename = `SMOCAPI-${shortCityName}`
+                        filename = `SMOCAPI-${shortCityName}.csv`
                     };
 
                     if (tableName === "Gross Rent as a Percentaga of Household Income (GRAPI)"){
-                        filename = `GRAPI-${shortCityName}`
+                        filename = `GRAPI-${shortCityName}.csv`
                     };
 
                     exportTableToCSV(filename);
