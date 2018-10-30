@@ -2163,6 +2163,22 @@ window.onload = function () {
 
                     var filename = `${tableName}-${input}`
 
+                    if (tableName === "Year Householder Moved Into Unit"){
+                        filename = `YearMovedIn-${input}`
+                    };
+
+                    if (tableName === "Selected Monthly Owner Costs (SMOC)"){
+                        filename = `SMOC-${input}`
+                    };
+
+                    if (tableName === "Selected Monthly Owner Costs as a Percentage of Household Income (SMOCAPI)"){
+                        filename = `SMOCAPI-${input}`
+                    };
+
+                    if (tableName === "Gross Rent as a Percentaga of Household Income (GRAPI)"){
+                        filename = `GRAPI-${input}`
+                    };
+
                     exportTableToCSV(filename);
                 })
             };
@@ -2178,7 +2194,7 @@ window.onload = function () {
             tableWrite (244,284,"House Heating Fuel",9,response);
             tableWrite (284,300,"Selected Characteristics",10,response);
             tableWrite (300,316,"Occupants Per Room",11,response);
-            tableWrite (316,356,"Value",12,response);
+            tableWrite (316,356,"Home Value",12,response);
             tableWrite (356,368,"Mortgage Status",13,response);
             tableWrite (368,436,"Selected Monthly Owner Costs (SMOC)",14,response);
             tableWrite (436,500,"Selected Monthly Owner Costs as a Percentage of Household Income (SMOCAPI)",15,response);
