@@ -1418,7 +1418,7 @@ window.onload = function () {
 
         console.log(`button clicked`);
 
-        if (input && input !== inputHistory[inputHistory.length-1]) {
+        if (input && input !== inputHistory[inputHistory.length - 1]) {
 
             $(`#table-box`).html(`
             <div class="loader"></div>
@@ -1437,24 +1437,26 @@ window.onload = function () {
                     $(`#table-box`).empty()
                         .append(`
                 <h1 id="cityTitle">${input}</h1>
+                <button id="downloadAll">Download ALL Tables</button>
                 `);
 
                     function tableWrite(init, end, tableName, tableID, response) {
 
                         $(`#table-box`).append(`  
-                <br>
-                <h2>${tableName}</h2>
-                <table id="table${tableID}">
-                <tr>
-                    <th></th>
-                    <th>Estimate</th>
-                    <th>MOE</th>
-                    <th>Percent</th>
-                    <th>%MOE</th>
-                </tr>
-                </table>
-                <button id="table${tableID}toCSV" class="csv-button">download .csv</button>
-                `);
+                        <br>
+                        <h2>${tableName}</h2>
+                        <table id="table${tableID}" value="${tableName}">
+                        <tr>
+                            <th id="indicator">Indicator</th>
+                            <th>Estimate</th>
+                            <th>MOE</th>
+                            <th>Percent</th>
+                            <th>%MOE</th>
+                        </tr>
+                        </table>
+                        <button id="table${tableID}toCSV" class="csv-button">Download THIS Table</button>
+                        <br>
+                        `);
 
                         for (i = init; i < end; i++) {
 
@@ -1559,7 +1561,7 @@ window.onload = function () {
                             };
 
                             exportTableToCSV(filename);
-                        })
+                        });
                     };
 
                     tableWrite(0, 20, "Housing Occupancy", 1, response);
@@ -1579,7 +1581,63 @@ window.onload = function () {
                     tableWrite(436, 500, "Selected Monthly Owner Costs as a Percentage of Household Income (SMOCAPI)", 15, response);
                     tableWrite(500, 540, "Gross Rent", 16, response);
                     tableWrite(540, 574, "Gross Rent as a Percentaga of Household Income (GRAPI)", 17, response);
-                }, 2000);
+
+                    $(`#downloadAll`).on(`click`, function () {
+
+                        console.log(`You clicked to download CSV for ALL tables of ${input}.`);
+
+                        var shortCityName = input.replace(/\s/g, '').replace(/-/g, '');
+
+                        if (shortCityName.length > 15) {
+                            shortCityName = shortCityName.substring(0, 14);
+                        };
+
+                        var filename = `HousingProfile-${shortCityName}.csv`;
+                        var csv = [];
+
+
+                        function exportAllToCSV() {
+                            var header = `Housing Profile for ${shortCityName}`
+
+
+                            var footer1 = `Accessed via Atlanta Regional Commission (ARC)'s Georgia City Housing Profile Tool`;
+                            var footer2 = `Data source: US Census / American Community Survey / 5-year estimates / 2012-16`;
+
+                            csv.push(header);
+                            csv.push("");
+                            csv.push("Inidicator,Estimate,MOE,Percent,%MOE");
+
+                            for (e = 1; e < 18; e++) {
+
+                                // csv.push($(`#tabel${e}`).val());
+
+                                var rows = document.querySelectorAll(`#table${e} tr`);
+
+                                for (var i = 1; i < rows.length; i++) {
+                                    var row = [], cols = rows[i].querySelectorAll("td");
+
+                                    for (var j = 0; j < cols.length; j++)
+                                        row.push(cols[j].innerText.replace(/,/g, ""));
+
+                                    csv.push(row.join(","));
+                                }
+                            };
+
+                            csv.push("");
+                            csv.push(footer1);
+                            csv.push(footer2);
+
+                            // console.log(JSON.stringify(csv));
+
+                            downloadCSV(csv.join("\n"), filename);
+                        };
+
+                        exportAllToCSV();
+
+                        // Download CSV file
+                    });
+
+                }, 1500);
             };
 
             var apiKey = `106872a18b40c2368c03c0b84de5322f9e09b710`

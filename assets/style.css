@@ -14,9 +14,6 @@ select, option, #input {
     font-size: 18px;
 }
 
-/* #table-box {
-    text-align: left
-} */
 
 table {
     width: 80%;
@@ -26,8 +23,14 @@ table {
     border-color: cadetblue;
 }
 
+
 .visible {
     padding-bottom: 40px;
+}
+
+#indicator {
+    color:whitesmoke;
+
 }
 
 .loader {
@@ -59,6 +62,18 @@ table {
     border-color: cadetblue;
 }
 
+#downloadAll {
+    /* float: right; */
+    margin: 15px auto 10px auto;
+    background-color: #db34c5;
+    color: whitesmoke;
+    border: solid;
+    border: 5px;
+    border-radius: 5px;
+    padding: 10px;
+    border-color: #db34c5;
+}
+
 .band {
     background-color: lightgray;
 }
@@ -83,16 +98,8 @@ table {
     font-size: 20px;
     color: whitesmoke;
     border: none;
-    background-color: rgb(37, 45, 151);
+    background-color: rgb(63, 68, 143);
 }
-
-/* #submit-button:hover {
-    background-color: rgb(54, 61, 155);
-}
-
-button:hover {
-    color: orangered;
-} */
 
 .container {
     background-color: whitesmoke;
