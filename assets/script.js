@@ -1509,13 +1509,13 @@ window.onload = function () {
                             console.log(`You clicked to download CSV for "${input}: ${tableName}" table.`);
 
                             function exportTableToCSV(filename) {
-                                var header = `${tableName} data for ${input}`
+                                var header = `**${tableName} data for ${input}**`
                                 var csv = [];
                                 var rows = document.querySelectorAll(`#table${tableID} tr`);
                                 var footer1 = `Accessed via Atlanta Regional Commission (ARC)'s Georgia City Housing Profile Tool`;
                                 var footer2 = `Data source: US Census / American Community Survey / 5-year estimates / 2012-16`;
 
-                                csv.push(header);
+                                csv.push(header.toUpperCase());
                                 csv.push(``);
 
                                 for (var i = 0; i < rows.length; i++) {
@@ -1584,6 +1584,27 @@ window.onload = function () {
 
                     $(`#downloadAll`).on(`click`, function () {
 
+                        var tableNameArray = [
+                            null,
+                            "Housing Occupancy",
+                            "Units in Structure",
+                            "Year Structure Built",
+                            "Rooms",
+                            "Bedrooms",
+                            "Housing Tenure",
+                            "Year Householder Moved Into Unit",
+                            "Vehicles Available",
+                            "House Heating Fuel",
+                            "Selected Characteristics",
+                            "Occupants Per Room",
+                            "Home Value",
+                            "Mortgage Status",
+                            "Selected Monthly Owner Costs (SMOC)",
+                            "Selected Monthly Owner Costs as a Percentage of Household Income (SMOCAPI)",
+                            "Gross Rent",
+                            "Gross Rent as a Percentaga of Household Income (GRAPI)"
+                        ]
+
                         console.log(`You clicked to download CSV for ALL tables of ${input}.`);
 
                         var shortCityName = input.replace(/\s/g, '').replace(/-/g, '');
@@ -1597,30 +1618,31 @@ window.onload = function () {
 
 
                         function exportAllToCSV() {
-                            var header = `Housing Profile for ${shortCityName}`
+                            var header = `**Housing Profile for ${input}**`
 
 
                             var footer1 = `Accessed via Atlanta Regional Commission (ARC)'s Georgia City Housing Profile Tool`;
                             var footer2 = `Data source: US Census / American Community Survey / 5-year estimates / 2012-16`;
 
-                            csv.push(header);
+                            csv.push(header.toUpperCase());
                             csv.push("");
-                            csv.push("Inidicator,Estimate,MOE,Percent,%MOE");
+                            // csv.push("Inidicator,Estimate,MOE,Percent,%MOE");
 
                             for (e = 1; e < 18; e++) {
 
-                                // csv.push($(`#tabel${e}`).val());
+                               csv.push(tableNameArray[e].toUpperCase());
 
                                 var rows = document.querySelectorAll(`#table${e} tr`);
 
-                                for (var i = 1; i < rows.length; i++) {
-                                    var row = [], cols = rows[i].querySelectorAll("td");
+                                for (var i = 0; i < rows.length; i++) {
+                                    var row = [], cols = rows[i].querySelectorAll("th, td");
 
                                     for (var j = 0; j < cols.length; j++)
                                         row.push(cols[j].innerText.replace(/,/g, ""));
 
                                     csv.push(row.join(","));
                                 }
+                                csv.push(""); 
                             };
 
                             csv.push("");
