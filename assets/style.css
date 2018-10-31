@@ -10,7 +10,7 @@ select, option, #input {
     height: 30px;
     width: 50%;
     margin-top: 20px;
-    border-radius: 5px;
+    border-radius: 8px;
     font-size: 18px;
 }
 
@@ -21,6 +21,7 @@ table {
     background-color: whitesmoke;
     border: solid 3px;
     border-color: cadetblue;
+    border-radius: 0px 0px 0px 5px;
 }
 
 
@@ -52,7 +53,7 @@ table {
 
 .csv-button {
     float: right;
-    margin-right: 10%;
+    margin-right: 15%;
     background-color: cadetblue;
     color: whitesmoke;
     border: solid;
@@ -62,21 +63,34 @@ table {
     border-color: cadetblue;
 }
 
+/* .csv-button:hover {
+    color: orange;
+} */
+
 #downloadAll {
     /* float: right; */
     margin: 15px auto 10px auto;
     background-color: #db34c5;
     color: whitesmoke;
-    border: solid;
-    border: 5px;
-    border-radius: 5px;
     padding: 10px;
+    border: solid;
+    border: 3px;
+    border-radius: 5px;
     border-color: #db34c5;
 }
+
+/* #downloadAll:hover {
+    color: orange;
+} */
 
 .band {
     background-color: lightgray;
 }
+
+/* .table-name {
+    float: left;
+    margin-left: 10%;
+} */
 
 #cityTitle {
     color: cadetblue;
@@ -91,15 +105,23 @@ table {
 }
 
 #submit-button {
-    margin: 20px auto 20px auto;
+    margin: 30px auto 20px auto;
     width: 100px;
     padding: 5px;
     border-radius: 5px;
     font-size: 20px;
     color: whitesmoke;
-    border: none;
+    border: solid;
+    border-width: 3px;
+    border-color: rgb(63, 68, 143);
     background-color: rgb(63, 68, 143);
 }
+
+/* #submit-button:hover {
+    border:solid;
+    border-width: 3px;
+    border-color: whitesmoke;
+} */
 
 .container {
     background-color: whitesmoke;

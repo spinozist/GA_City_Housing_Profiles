@@ -1394,8 +1394,7 @@ window.onload = function () {
         "Median (dollars)",
         "No rent paid",
         "Ocuppied units paying rent (computed)",
-        "Less than 10.0 percent",
-        "10.0 to 14.9 percent",
+        "Less than 15.0 percent",
         "15.0 to 19.9 percent",
         "20.0 to 24.9 percent",
         "25.0 to 29.9 percent",
@@ -1444,7 +1443,7 @@ window.onload = function () {
 
                         $(`#table-box`).append(`  
                         <br>
-                        <h2>${tableName}</h2>
+                        <h2 class="table-name">${tableName}</h2>
                         <table id="table${tableID}" value="${tableName}">
                         <tr>
                             <th id="indicator">Indicator</th>
@@ -1454,7 +1453,7 @@ window.onload = function () {
                             <th>%MOE</th>
                         </tr>
                         </table>
-                        <button id="table${tableID}toCSV" class="csv-button">Download THIS Table</button>
+                        <button id="table${tableID}toCSV" class="csv-button">Download Table</button>
                         <br>
                         `);
 
@@ -1580,7 +1579,7 @@ window.onload = function () {
                     tableWrite(368, 436, "Selected Monthly Owner Costs (SMOC)", 14, response);
                     tableWrite(436, 500, "Selected Monthly Owner Costs as a Percentage of Household Income (SMOCAPI)", 15, response);
                     tableWrite(500, 540, "Gross Rent", 16, response);
-                    tableWrite(540, 574, "Gross Rent as a Percentaga of Household Income (GRAPI)", 17, response);
+                    tableWrite(540, 572, "Gross Rent as a Percentaga of Household Income (GRAPI)", 17, response);
 
                     $(`#downloadAll`).on(`click`, function () {
 
