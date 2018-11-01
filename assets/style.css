@@ -129,16 +129,16 @@ table {
     font-size: 18px;
     color: whitesmoke;
     border: solid;
-    border-width: 3px;
+    border-width: 2px;
     border-color: rgb(63, 68, 143);
     background-color: rgb(63, 68, 143);
 }
 
-/* #submit-button:hover {
+#submit-button:hover {
     border:solid;
-    border-width: 3px;
+    border-width: 2px;
     border-color: whitesmoke;
-} */
+}
 
 .container {
     background-color: whitesmoke;

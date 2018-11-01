@@ -1435,9 +1435,9 @@ window.onload = function () {
 
                     $(`#table-box`).empty()
                         .append(`
-                <h1 id="cityTitle">${input}</h1>
-                <button id="downloadAll">Download ALL Tables</button>
-                `);
+                        <h1 id="cityTitle">${input}</h1>
+                        <button id="downloadAll">Download ALL Tables</button>
+                        `);
 
                     function tableWrite(init, end, tableName, tableID, response) {
 
