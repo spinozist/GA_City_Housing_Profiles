@@ -1443,8 +1443,8 @@ window.onload = function () {
 
                         $(`#table-box`).append(`  
                         <br>
-                        <h2 class="table-name">${tableName}</h2>
-                        <table id="table${tableID}" value="${tableName}">
+                        <h2 class="table-name" id="table-name${tableID}">${tableName}</h2>
+                        <table id="table${tableID}">
                         <tr>
                             <th id="indicator">Indicator</th>
                             <th>Estimate</th>
@@ -1460,13 +1460,22 @@ window.onload = function () {
                         for (i = init; i < end; i++) {
 
                             var estimate = response[1][i];
-                            var estimateMOE = `+/-${response[1][i + 1]}`;
+                            var estimateMOE = response[1][i + 1];
                             var percent = response[1][i + 2];
                             var percentMOE = response[1][i + 3];
 
                             if (estimate > 999) {
                                 estimate = numeral(estimate).format('0,0')
+                            }
+                            else if (estimate == -666666666.0){
+                                estimate = `*****`;
                             };
+
+                            if (estimateMOE == -222222222.0) {
+                                estimateMOE = `*****`;
+                            } else {
+                                estimateMOE = `+/-${estimateMOE}`;
+                            }
 
                             if (response[1][i + 1] > 999) {
                                 estimateMOE = `+/-${numeral(response[1][i + 1]).format('0,0')}`
@@ -1504,7 +1513,22 @@ window.onload = function () {
                             }
                         };
 
+                        $(`#table${tableID}toCSV`).hover(function () {
+                            $(this).css(`background-color`, `#db34c5`)
+                                .css(`border-color`, `#db34c5`);
+                            $(`#table${tableID}`).css(`border-color`, `#db34c5`);
+                            $(`#table-name${tableID}`).css(`background-color`, `#db34c5`)
+                            .css(`border-color`, `#db34c5`);
+                        }, function (){
+                            $(this).css(`background-color`, `cadetblue`)
+                            .css(`border-color`, `cadetblue`);
+                            $(`#table${tableID}`).css(`border-color`, `cadetblue`);
+                            $(`#table-name${tableID}`).css(`background-color`, `cadetblue`)
+                            .css(`border-color`, `cadetblue`);
+                        });
+
                         $(`#table${tableID}toCSV`).on(`click`, function () {
+
                             console.log(`You clicked to download CSV for "${input}: ${tableName}" table.`);
 
                             function exportTableToCSV(filename) {

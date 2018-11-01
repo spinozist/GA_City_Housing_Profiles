@@ -63,6 +63,18 @@ table {
     border-color: cadetblue;
 }
 
+.csv-button-active {
+    float: right;
+    margin-right: 15%;
+    background-color: peru;
+    color: whitesmoke;
+    border: solid;
+    border-radius: 0px 0px 5px 5px;
+    padding: 5px;
+    margin-top: 0px;
+    border-color: #34e6a1;
+}
+
 /* .csv-button:hover {
     color: orange;
 } */
@@ -70,12 +82,17 @@ table {
 #downloadAll {
     /* float: right; */
     margin: 15px auto 10px auto;
-    background-color: #db34c5;
+    background-color: cadetblue;
     color: whitesmoke;
     padding: 10px;
     border: solid;
     border: 3px;
     border-radius: 5px;
+    border-color: cadetblue;
+}
+
+#downloadAll:hover {
+    background-color: #db34c5;
     border-color: #db34c5;
 }
 
@@ -109,7 +126,7 @@ table {
     width: 100px;
     padding: 5px;
     border-radius: 5px;
-    font-size: 20px;
+    font-size: 18px;
     color: whitesmoke;
     border: solid;
     border-width: 3px;
@@ -158,6 +175,7 @@ h1 {
     font-style: bold;
 }
 
+.table-name, 
 h2 {
     color: whitesmoke;
     font-size: 24px;
