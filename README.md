@@ -1,13 +1,10 @@
 # Georgia City Housing Profile Tool
 
 ## Created by 
-Erik Woodworth
-Senior Planner
-Research & Analytics Group
-@ the Atlanta Regional Commission
+Erik Woodworth / Senior Planner / Research & Analytics Group @ the Atlanta Regional Commission
 
 ## Purpose
-This too was built to assist cities in Georgia with findng housing data to be included in grants, comp plans, reports, etc.
+This tool was built to assist cities in Georgia with findng housing data to be included in grants, comp plans, reports, etc.
 
 ## Code description
 This tool uses the US Census API to retrieve the housing profile table (DP04) by city ID (mapped to city names by index position in two arrays).  The tableWrite funciton parses the response from this API into seperate tables with section headers and an exportTableToCSV function within a button click listener.
