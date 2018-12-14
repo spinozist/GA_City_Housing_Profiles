@@ -175,6 +175,10 @@ h1 {
     font-style: bold;
 }
 
+#chart-title {
+    color: cadetblue;
+}
+
 .table-name, 
 h2 {
     color: whitesmoke;

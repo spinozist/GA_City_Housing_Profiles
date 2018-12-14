@@ -1403,287 +1403,182 @@ window.onload = function () {
         "Not computed"
     ]
 
+    var chartSelector = [
+        "Housing Occupancy",
+        "Units in Structure",
+        "Year Structure Built",
+        "Rooms",
+        "Bedrooms",
+        "Housing Tenure",
+        "Year Householder Moved Into Unit",
+        "Vehicles Available",
+        "House Heating Fuel",
+        "Selected Characteristics",
+        "Occupants Per Room",
+        "Home Value",
+        "Mortgage Status",
+        "Selected Monthly Owner Costs (SMOC)",
+        "Selected Monthly Owner Costs as a Percentage of Household Income (SMOCAPI)",
+        "Gross Rent",
+        "Gross Rent as a Percentaga of Household Income (GRAPI)",
+    ];
+
+    var selectChart = $(`#select-chart`);
+
+    for (var i = 0; i < chartSelector.length; i++) {
+        var opt = chartSelector[i];
+        var el = $(`<option>`);
+        el.text(opt);
+        el.attr(`value`, opt);
+        selectChart.append(el);
+    };
+
     $(`#input`).autocomplete({
         source: cityGA
     });
 
-    var inputHistory = [];
-
     $(`#submit-button`).on(`click`, function () {
 
-        var input = $(`#input`).val();
-
-        var cityID = cityIDs[cityGA.indexOf(input)]
-
-        console.log(`button clicked`);
-
-        if (input && input !== inputHistory[inputHistory.length - 1]) {
-
-            $(`#table-box`).html(`
-            <div class="loader"></div>
-            `);
-
-            $(`#table-box`).attr(`class`, `visible`);
-
-            function writeProfile(response) {
-
-                inputHistory.push(input);
-
-                console.log(response)
-
-                setTimeout(function () {
-
-                    $(`#table-box`).empty()
-                        .append(`
-                        <h1 id="cityTitle">${input}</h1>
-                        <button id="downloadAll">Download ALL Tables</button>
-                        `);
-
-                    function tableWrite(init, end, tableName, tableID, response) {
-
-                        $(`#table-box`).append(`  
-                        <br>
-                        <h2 class="table-name" id="table-name${tableID}">${tableName}</h2>
-                        <table id="table${tableID}">
-                        <tr>
-                            <th id="indicator">Indicator</th>
-                            <th>Estimate</th>
-                            <th>MOE</th>
-                            <th>Percent</th>
-                            <th>%MOE</th>
-                        </tr>
-                        </table>
-                        <button id="table${tableID}toCSV" class="csv-button">Download Table</button>
-                        <br>
-                        `);
-
-                        for (i = init; i < end; i++) {
-
-                            var estimate = response[1][i];
-                            var estimateMOE = response[1][i + 1];
-                            var percent = response[1][i + 2];
-                            var percentMOE = response[1][i + 3];
-
-                            if (estimate > 999) {
-                                estimate = numeral(estimate).format('0,0')
-                            }
-                            else if (estimate == -666666666.0){
-                                estimate = `*****`;
-                            };
-
-                            if (estimateMOE == -222222222.0) {
-                                estimateMOE = `*****`;
-                            } else {
-                                estimateMOE = `+/-${estimateMOE}`;
-                            }
-
-                            if (response[1][i + 1] > 999) {
-                                estimateMOE = `+/-${numeral(response[1][i + 1]).format('0,0')}`
-                            };
-
-                            if (percent == -888888888 || estimate === numeral(percent).format(`0,0`) || estimate === percent) {
-                                percent = `*****`;
-                            } else {
-                                percent = `${percent}%`;
-                            };
-
-
-                            if (percentMOE == -888888888) {
-                                percentMOE = `*****`;
-                            } else {
-                                percentMOE = `+/-${percentMOE}`;
-                            }
-
-                            if (i % 4 == 0) {
-                                var labelIndex = i / 4;
-                                var tableRow = $(`<tr>`);
-                                if ((i - init) % 8 == 0) {
-                                    tableRow.attr("class", "band");
-                                }
-
-                                tableRow.html(`
-                            <td class="rowLabel">${rowLabels[labelIndex]}</td>
-                            <td>${estimate}</td>
-                            <td>${estimateMOE}</td>
-                            <td>${percent}</td>
-                            <td>${percentMOE}</td>
-        
-                            `);
-                                $(`#table${tableID}`).append(tableRow);
-                            }
-                        };
-
-                        $(`#table${tableID}toCSV`).hover(function () {
-                            $(this).css(`background-color`, `#db34c5`)
-                                .css(`border-color`, `#db34c5`);
-                            $(`#table${tableID}`).css(`border-color`, `#db34c5`);
-                            $(`#table-name${tableID}`).css(`background-color`, `#db34c5`)
-                            .css(`border-color`, `#db34c5`);
-                        }, function (){
-                            $(this).css(`background-color`, `cadetblue`)
-                            .css(`border-color`, `cadetblue`);
-                            $(`#table${tableID}`).css(`border-color`, `cadetblue`);
-                            $(`#table-name${tableID}`).css(`background-color`, `cadetblue`)
-                            .css(`border-color`, `cadetblue`);
-                        });
-
-                        $(`#table${tableID}toCSV`).on(`click`, function () {
-
-                            console.log(`You clicked to download CSV for "${input}: ${tableName}" table.`);
-
-                            function exportTableToCSV(filename) {
-                                var header = `**${tableName} data for ${input}**`
-                                var csv = [];
-                                var rows = document.querySelectorAll(`#table${tableID} tr`);
-                                var footer1 = `Accessed via Atlanta Regional Commission (ARC)'s Georgia City Housing Profile Tool`;
-                                var footer2 = `Data source: US Census / American Community Survey / 5-year estimates / 2012-16`;
-
-                                csv.push(header.toUpperCase());
-                                csv.push(``);
-
-                                for (var i = 0; i < rows.length; i++) {
-                                    var row = [], cols = rows[i].querySelectorAll("td, th");
-
-                                    for (var j = 0; j < cols.length; j++)
-                                        row.push(cols[j].innerText.replace(/,/g, ""));
-
-                                    csv.push(row.join(","));
-                                }
-
-                                csv.push(``);
-                                csv.push(footer1);
-                                csv.push(footer2);
-
-                                // Download CSV file
-                                downloadCSV(csv.join("\n"), filename);
-                            };
-
-                            var shortTableName = tableName.replace(/\s/g, '');
-                            var shortCityName = input.replace(/\s/g, '').replace(/-/g, '');
-
-                            if (shortCityName.length > 15) {
-                                shortCityName = shortCityName.substring(0, 14);
-                            }
-
-                            var filename = `${shortTableName}-${shortCityName}.csv`
-
-                            if (tableName === "Year Householder Moved Into Unit") {
-                                filename = `YearMovedIn-${shortCityName}.csv`
-                            };
-
-                            if (tableName === "Selected Monthly Owner Costs (SMOC)") {
-                                filename = `SMOC-${shortCityName}.csv`
-                            };
-
-                            if (tableName === "Selected Monthly Owner Costs as a Percentage of Household Income (SMOCAPI)") {
-                                filename = `SMOCAPI-${shortCityName}.csv`
-                            };
-
-                            if (tableName === "Gross Rent as a Percentaga of Household Income (GRAPI)") {
-                                filename = `GRAPI-${shortCityName}.csv`
-                            };
-
-                            exportTableToCSV(filename);
-                        });
-                    };
-
-                    tableWrite(0, 20, "Housing Occupancy", 1, response);
-                    tableWrite(20, 60, "Units in Structure", 2, response);
-                    tableWrite(60, 104, "Year Structure Built", 3, response);
-                    tableWrite(104, 148, "Rooms", 4, response);
-                    tableWrite(148, 176, "Bedrooms", 5, response);
-                    tableWrite(176, 196, "Housing Tenure", 6, response);
-                    tableWrite(196, 224, "Year Householder Moved Into Unit", 7, response);
-                    tableWrite(224, 244, "Vehicles Available", 8, response);
-                    tableWrite(244, 284, "House Heating Fuel", 9, response);
-                    tableWrite(284, 300, "Selected Characteristics", 10, response);
-                    tableWrite(300, 316, "Occupants Per Room", 11, response);
-                    tableWrite(316, 356, "Home Value", 12, response);
-                    tableWrite(356, 368, "Mortgage Status", 13, response);
-                    tableWrite(368, 436, "Selected Monthly Owner Costs (SMOC)", 14, response);
-                    tableWrite(436, 500, "Selected Monthly Owner Costs as a Percentage of Household Income (SMOCAPI)", 15, response);
-                    tableWrite(500, 540, "Gross Rent", 16, response);
-                    tableWrite(540, 572, "Gross Rent as a Percentage of Household Income (GRAPI)", 17, response);
-
-                    $(`#downloadAll`).on(`click`, function () {
-
-                        var tableNameArray = [
-                            null,
-                            "Housing Occupancy",
-                            "Units in Structure",
-                            "Year Structure Built",
-                            "Rooms",
-                            "Bedrooms",
-                            "Housing Tenure",
-                            "Year Householder Moved Into Unit",
-                            "Vehicles Available",
-                            "House Heating Fuel",
-                            "Selected Characteristics",
-                            "Occupants Per Room",
-                            "Home Value",
-                            "Mortgage Status",
-                            "Selected Monthly Owner Costs (SMOC)",
-                            "Selected Monthly Owner Costs as a Percentage of Household Income (SMOCAPI)",
-                            "Gross Rent",
-                            "Gross Rent as a Percentaga of Household Income (GRAPI)"
-                        ]
-
-                        console.log(`You clicked to download CSV for ALL tables of ${input}.`);
-
-                        var shortCityName = input.replace(/\s/g, '').replace(/-/g, '');
-
-                        if (shortCityName.length > 15) {
-                            shortCityName = shortCityName.substring(0, 14);
-                        };
-
-                        var filename = `HousingProfile-${shortCityName}.csv`;
-                        var csv = [];
-
-
-                        function exportAllToCSV() {
-                            var header = `**Housing Profile for ${input}**`
-
-
-                            var footer1 = `Accessed via Atlanta Regional Commission (ARC)'s Georgia City Housing Profile Tool`;
-                            var footer2 = `Data source: US Census / American Community Survey / 5-year estimates / 2012-16`;
-
-                            csv.push(header.toUpperCase());
-                            csv.push("");
-                            // csv.push("Inidicator,Estimate,MOE,Percent,%MOE");
-
-                            for (e = 1; e < 18; e++) {
-
-                               csv.push(tableNameArray[e].toUpperCase());
-
-                                var rows = document.querySelectorAll(`#table${e} tr`);
-
-                                for (var i = 0; i < rows.length; i++) {
-                                    var row = [], cols = rows[i].querySelectorAll("th, td");
-
-                                    for (var j = 0; j < cols.length; j++)
-                                        row.push(cols[j].innerText.replace(/,/g, ""));
-
-                                    csv.push(row.join(","));
-                                }
-                                csv.push(""); 
-                            };
-
-                            csv.push("");
-                            csv.push(footer1);
-                            csv.push(footer2);
-
-                            // console.log(JSON.stringify(csv));
-
-                            downloadCSV(csv.join("\n"), filename);
-                        };
-
-                        exportAllToCSV();
-
-                        // Download CSV file
-                    });
-
-                }, 1500);
+        $(`#table-box`).empty();
+
+        $(`#table-box`).html(`
+        <div class="loader"></div>
+        `);
+
+        // $(`#table-box`).attr(`class`, `visible`);
+
+        setTimeout(function () {
+
+            var selectedChart = $(`#select-chart option:selected`).val();
+
+            function selectChart(response) {
+
+                switch (selectedChart) {
+                    case "Housing Occupancy":
+                        drawChart(0, 12, response, selectedChart);
+                        break;
+
+                    case "Units in Structure":
+                        drawChart(20, 60, response, selectedChart);
+                        break;
+
+                    case "Year Structure Built":
+                        drawChart(60, 104, response, selectedChart);
+                        break;
+
+                    case "Rooms":
+                        drawChart(104, 144, response, selectedChart);
+                        break;
+
+                    case "Bedrooms":
+                        drawChart(148, 176, response, selectedChart);
+                        break;
+
+                    case "Housing Tenure":
+                        drawChart(176, 196, response, selectedChart);
+                        break;
+
+                    case "Year Householder Moved Into Unit":
+                        drawChart(196, 224, response, selectedChart);
+                        break;
+
+                    case "Vehicles Available":
+                        drawChart(224, 244, response, selectedChart);
+                        break;
+
+                    case "House Heating Fuel":
+                        drawChart(244, 284, response, selectedChart);
+                        break;
+
+                    case "Selected Characteristics":
+                        drawChart(284, 300, response, selectedChart);
+                        break;
+
+                    case "Occupants Per Room":
+                        drawChart(300, 316, response, selectedChart);
+                        break;
+
+                    case "Home Value":
+                        drawChart(316, 352, response, selectedChart);
+                        break;
+
+                    case "Mortgage Status":
+                        drawChart(356, 368, response, selectedChart);
+                        break;
+
+                    case "Selected Monthly Owner Costs (SMOC)":
+                        drawChart(368, 436, response, selectedChart);
+                        break;
+
+                    case "Selected Monthly Owner Costs as a Percentage of Household Income (SMOCAPI)":
+                        drawChart(436, 500, response, selectedChart);
+                        break;
+
+                    case "Gross Rent":
+                        drawChart(500, 540, response, selectedChart);
+                        break;
+
+                    case "Gross Rent as a Percentaga of Household Income (GRAPI)":
+                        drawChart(540, 572, response, selectedChart);
+                        break;
+                }
             };
+
+            function drawChart(init, end, response, title) {
+
+                console.log(response);
+
+                var values16 = [];
+
+                var labels = [];
+
+                for (i = init + 1; i < end; i++) {
+                    if (i % 4 == 0) {
+                        console.log(response[1][i]);
+                        values16.push(response[1][i]);
+                        labels.push(rowLabels[i / 4]);
+                    }
+
+                }
+
+                $(`#table-box`).html(`
+                <h1 id="chart-title">${title}<h1>
+                <canvas id="myChart"></canvas>
+                `);
+
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var chart = new Chart(ctx, {
+                    // The type of chart we want to create
+                    type: 'bar',
+
+                    // The data for our dataset
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: `ACS 2012-16`,
+                            backgroundColor: 'rgb(255, 99, 132)',
+                            borderColor: 'rgb(255, 99, 132)',
+                            data: values16,
+                        }]
+                    },
+
+                    // Configuration options go here
+                    options: {
+                        legend: {
+                            display: false,
+
+                        }
+                    }
+                });
+
+
+            }
+
+            var input = $(`#input`).val();
+
+            var cityID = cityIDs[cityGA.indexOf(input)]
+
+            console.log(`button clicked`);
 
             var apiKey = `106872a18b40c2368c03c0b84de5322f9e09b710`
 
@@ -1692,35 +1587,12 @@ window.onload = function () {
             $.ajax({
                 url: queryURL,
                 method: "GET"
-            }).then(writeProfile);
-        }
+            }).then(selectChart)
+
+        }, 2000);
+
+
+
     });
 
-    //CSV EXPORT
-
-    function downloadCSV(csv, filename) {
-        var csvFile;
-        var downloadLink;
-
-        // CSV file
-        csvFile = new Blob([csv], { type: "text/csv" });
-
-        // Download link
-        downloadLink = document.createElement("a");
-
-        // File name
-        downloadLink.download = filename;
-
-        // Create a link to the file
-        downloadLink.href = window.URL.createObjectURL(csvFile);
-
-        // Hide download link
-        downloadLink.style.display = "none";
-
-        // Add the link to DOM
-        document.body.appendChild(downloadLink);
-
-        // Click download link
-        downloadLink.click();
-    }
 }
